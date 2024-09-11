@@ -1,4 +1,4 @@
-Here's a detailed **README** file that will help your teammates easily understand, set up, and contribute to the **MediCliq - The Automatic Drug Dispensing Machine** project.
+
 
 ---
 

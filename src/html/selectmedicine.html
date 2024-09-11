@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/css/selectmedicine.css" />
+    <title>Select Medicine</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="cart-icon">
+        <img src="/assets/images/medical-cart.svg" alt="Cart Icon" />
+        <span id="cartCount">0</span>
+      </div>
+    </div>
+
+    <div class="selection-container">
+      <h2>Select Your Medicines</h2>
+      
+      <div class="medicine-list">
+        <h3>Available Medicines</h3>
+        <div class="medicine-item" data-price="20" data-availability="yes">
+          <div class="medicine-info">
+            <span class="medicine-name">Medicine A</span>
+            <span class="medicine-price">$20</span>
+            <span class="availability yes">Available</span>
+          </div>
+          <div class="quantity-controls">
+            <button class="quantity-decrease">-</button>
+            <input type="number" class="quantity-input" value="0" min="0" disabled />
+            <button class="quantity-increase">+</button>
+          </div>
+        </div>
+        <div class="medicine-item" data-price="25" data-availability="yes">
+          <div class="medicine-info">
+            <span class="medicine-name">Medicine C</span>
+            <span class="medicine-price">$25</span>
+            <span class="availability yes">Available</span>
+          </div>
+          <div class="quantity-controls">
+            <button class="quantity-decrease">-</button>
+            <input type="number" class="quantity-input" value="0" min="0" disabled />
+            <button class="quantity-increase">+</button>
+          </div>
+        </div>
+        
+        <h3>Not Available Medicines</h3>
+        <div class="medicine-item" data-price="30" data-availability="no">
+          <div class="medicine-info">
+            <span class="medicine-name">Medicine B</span>
+            <span class="medicine-price">$30</span>
+            <span class="availability no">Not Available</span>
+          </div>
+          <div class="quantity-controls">
+            <button class="quantity-decrease" disabled>-</button>
+            <input type="number" class="quantity-input" value="0" min="0" disabled />
+            <button class="quantity-increase" disabled>+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-amount">
+        <h3>Total Amount: $<span id="totalAmount">0</span></h3>
+      </div>
+
+      <button onclick="submitOrder()">Submit Order</button>
+    </div>
+
+    <script src="/src/js/selectmedicine.js"></script>
+  </body>
+</html>

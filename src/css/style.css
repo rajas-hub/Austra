@@ -1,0 +1,67 @@
+body {
+    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .heading h1 {
+    color: #4b3f6c;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .heading h2 {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  .center-button {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #glowButton {
+    background-color: #4b3f6c;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(75, 63, 108, 0.6);
+    transition: all 0.3s ease;
+  }
+  
+  #glowButton:hover {
+    background-color: #6d5b98;
+    box-shadow: 0 0 25px rgba(75, 63, 108, 0.9);
+    transform: translateY(-3px);
+  }
+  
+  #glowButton:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 10px rgba(75, 63, 108, 0.5);
+  }
+  
+  footer {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+ 

@@ -1,0 +1,54 @@
+/* Alert page styling */
+.alert-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffe6e6;
+  }
+  
+  .alert-content {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border: 3px solid #e74c3c;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+  }
+  
+  .alert-content h2 {
+    color: #e74c3c;
+    margin-bottom: 15px;
+    font-size: 2rem;
+  }
+  
+  .alert-content p {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .alert-content img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  
+  .alert-content button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .alert-content button:hover {
+    background-color: #c0392b;
+  }
+  

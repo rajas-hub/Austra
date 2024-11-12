@@ -11,9 +11,18 @@
       <div class="alert-content">
         <h2>Invalid Prescription</h2>
         <p>We're sorry, but the prescription you have provided is invalid.</p>
-        <p><strong>Reason:</strong> The prescription appears to be expired or not recognized by the system.</p>
-        <img src="/assets/images/file-error.svg" alt="Invalid Prescription Alert" />
-        <button onclick="goBack()">Try Again</button>
+        <p>
+          <strong>Reason:</strong> The prescription appears to be expired or not
+          recognized by the system.
+        </p>
+        <img
+          src="/assets/images/file-error.svg"
+          alt="Invalid Prescription Alert"
+        />
+        <!-- <button onclick="goBack()">Try Again</button> -->
+        <button onclick="window.location.href='prescription_image.html';">
+          Try Again
+        </button>
       </div>
     </div>
 

@@ -16,7 +16,7 @@
 
     <div class="selection-container">
       <h2>Select Your Medicines</h2>
-      
+
       <div class="medicine-list">
         <h3>Available Medicines</h3>
         <div class="medicine-item" data-price="20" data-availability="yes">
@@ -27,7 +27,13 @@
           </div>
           <div class="quantity-controls">
             <button class="quantity-decrease">-</button>
-            <input type="number" class="quantity-input" value="0" min="0" disabled />
+            <input
+              type="number"
+              class="quantity-input"
+              value="0"
+              min="0"
+              disabled
+            />
             <button class="quantity-increase">+</button>
           </div>
         </div>
@@ -39,11 +45,17 @@
           </div>
           <div class="quantity-controls">
             <button class="quantity-decrease">-</button>
-            <input type="number" class="quantity-input" value="0" min="0" disabled />
+            <input
+              type="number"
+              class="quantity-input"
+              value="0"
+              min="0"
+              disabled
+            />
             <button class="quantity-increase">+</button>
           </div>
         </div>
-        
+
         <h3>Not Available Medicines</h3>
         <div class="medicine-item" data-price="30" data-availability="no">
           <div class="medicine-info">
@@ -53,7 +65,13 @@
           </div>
           <div class="quantity-controls">
             <button class="quantity-decrease" disabled>-</button>
-            <input type="number" class="quantity-input" value="0" min="0" disabled />
+            <input
+              type="number"
+              class="quantity-input"
+              value="0"
+              min="0"
+              disabled
+            />
             <button class="quantity-increase" disabled>+</button>
           </div>
         </div>
@@ -62,8 +80,7 @@
       <div class="total-amount">
         <h3>Total Amount: $<span id="totalAmount">0</span></h3>
       </div>
-
-      <button onclick="submitOrder()">Submit Order</button>
+      <button onclick="window.location.href='cart.html';">Submit Order</button>
     </div>
 
     <script src="/src/js/selectmedicine.js"></script>

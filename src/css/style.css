@@ -39,10 +39,12 @@ body {
   #glowButton {
     background-color: #4b3f6c;
     color: white;
-    padding: 15px 30px;
+    padding: 30px 45px;
     border: none;
-    border-radius: 30px;
-    font-size: 1.2rem;
+    border-radius: 20px;
+    width: 500px;
+    height: 140px;
+    font-size: 3.2rem;
     cursor: pointer;
     box-shadow: 0 0 15px rgba(75, 63, 108, 0.6);
     transition: all 0.3s ease;

@@ -16,7 +16,7 @@
 
     <div class="cart-container">
       <h2>Your Cart</h2>
-      
+
       <div class="cart-list">
         <!-- Cart items will be dynamically inserted here -->
       </div>
@@ -25,7 +25,9 @@
         <h3>Total Amount: $<span id="totalAmount">0.00</span></h3>
       </div>
 
-      <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+      <button onclick="window.location.href='checkout.html';">
+        Proceed to Checkout
+      </button>
     </div>
 
     <script src="/src/js/cart.js"></script>

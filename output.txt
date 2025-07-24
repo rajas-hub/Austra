@@ -1,0 +1,5 @@
+Patient Name: Kshamita Mane
+Mobile Number: 9021522473
+Medicine Details:
+{'Medicine Name': '9-VITA Tablet', 'Duration': '10 days', 'Measure': '1'}
+{'Medicine Name': 'Acevic 100 Tablet', 'Duration': '15 days', 'Measure': '2'}

@@ -1,0 +1,37 @@
+Detected text: '1029'24, 10:48 Pl' (Original: '1029'24, 10:48 Pl') with confidence: 0.19
+Detected text: 'Clinicia' (Original: 'Clinicia') with confidence: 0.92
+Detected text: 'Practice [vanagemenc for Dortors' (Original: 'Practice [vanagemenc for Dortors') with confidence: 0.66
+Detected text: 'Aagya Clinic' (Original: 'Aagya Clinic') with confidence: 1.00
+Detected text: '0' (Original: '0') with confidence: 1.00
+Detected text: 'Ph: 90152435698' (Original: 'Ph: 90152435698') with confidence: 0.91
+Detected text: 'Kshamita Mane (CI)' (Original: 'Kshamita Mane (CI)') with confidence: 0.77
+Detected text: 'Dr: Utkarsh Agrawal' (Original: 'Dr: Utkarsh Agrawal') with confidence: 0.84
+Detected text: 'Male/' (Original: 'Male/') with confidence: 0.86
+Detected text: 'Registration No:' (Original: 'Registration No:') with confidence: 0.77
+Detected text: '9021522473, agrawvalutk.26@gmail.com' (Original: '9021522473, agrawvalutk.26@gmail.com') with confidence: 0.93
+Detected text: 'PRESCRIPTION' (Original: 'PRESCRIPTION') with confidence: 1.00
+Detected text: 'Date: 24-Oct-2024 12.00 am' (Original: 'Date: 24-Oct-2024 12.00 am') with confidence: 0.69
+Detected text: 'Rx' (Original: 'Rx') with confidence: 0.99
+Detected text: 'Medlclne' (Original: 'Medlclne') with confidence: 0.83
+Detected text: 'Description' (Original: 'Description') with confidence: 1.00
+Detected text: 'Dosage' (Original: 'Dosage') with confidence: 1.00
+Detected text: 'Duration' (Original: 'Duration') with confidence: 1.00
+Detected text: 'Measure' (Original: 'Measure') with confidence: 0.88
+Detected text: 'Instruction' (Original: 'Instruction') with confidence: 0.72
+Detected text: '9-VITA Tablet' (Original: '9-VITA Tablet') with confidence: 1.00
+Detected text: '1-0-1' (Original: '1-0-1') with confidence: 0.89
+Detected text: '10 days' (Original: '10 days') with confidence: 1.00
+Detected text: '1' (Original: '1') with confidence: 0.15
+Detected text: 'After Meal' (Original: 'After Meal') with confidence: 1.00
+Detected text: 'Acevic 100 Tablet' (Original: 'Acevic 100 Tablet') with confidence: 0.77
+Detected text: '1-1-0' (Original: '1-1-0') with confidence: 0.99
+Detected text: '15 days' (Original: '15 days') with confidence: 0.98
+Detected text: '2' (Original: '2') with confidence: 1.00
+Detected text: 'Before Meal' (Original: 'Before Meal') with confidence: 0.92
+Detected text: 'Notes;' (Original: 'Notes;') with confidence: 0.89
+Detected text: 'abcdefg' (Original: 'abcdefg') with confidence: 0.99
+Detected text: 'Next Follow up date:' (Original: 'Next Follow up date:') with confidence: 0.96
+Detected text: 'Sunday Nov 24,2024 12.00 AM' (Original: 'Sunday Nov 24,2024 12.00 AM') with confidence: 0.78
+Detected text: 'Authorised Signature' (Original: 'Authorised Signature') with confidence: 0.75
+Detected text: 'htcps "tclinicia com applvreb_apildocument_previewphp?doument_id-c71719b354630ffabze 1e08328588e09&documert_typezprescriptior' (Original: 'htcps "tclinicia com applvreb_apildocument_previewphp?doument_id-c71719b354630ffabze 1e08328588e09&documert_typezprescriptior') with confidence: 0.14
+Detected text: 'V1' (Original: 'V1') with confidence: 0.24

@@ -1,0 +1,185 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCliq - Medicine Cart</title>
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Optional Bootstrap 4 JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <style>
+        /* Centering the header container */
+        .header {
+            display: flex;
+            justify-content: center;   /* Horizontally centers the logo */
+            align-items: center;       /* Vertically centers the logo */
+            margin-bottom: 30px;       /* Space between the logo and the container */
+        }
+
+        /* Styling for the logo */
+        .logo {
+            max-width: 250px;           /* Ensures the logo fits within the container */
+            height: auto;              /* Maintain aspect ratio */
+        }
+
+        /* Body Styles */
+        body {
+            display: flex;
+            justify-content: center;  /* Horizontally center the content */
+            align-items: center;      /* Vertically center the content */
+            height: 100vh;            /* Make the body take the full viewport height */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            flex-direction: column; /* Stack the content vertically */
+        }
+
+        /* Container for the cart */
+        .container {
+            max-width: 1000px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;  /* Center the content inside the container */
+        }
+
+        /* Heading Styles */
+        h1, h2 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        /* Cart Styles */
+        .medicine-cart {
+            margin: 20px 0;
+        }
+
+        .medicine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            position: relative; /* Added for z-index to work */
+            z-index: 1; /* Ensure button is above other elements */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Navigation Buttons */
+        .navigation-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .navigation-buttons button {
+            margin: 0 10px;
+        }
+
+        /* Cart Total */
+        #cart-total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Media Queries for Tablet (600px to 1024px) */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 15px;  /* Adjust padding for smaller screens */
+            }
+
+            .medicine-item {
+                flex-direction: column;  /* Stack the items vertically for smaller screens */
+                align-items: flex-start;  /* Align items to the start */
+            }
+
+            .quantity-controls {
+                flex-direction: row;  /* Keep the quantity controls in row */
+                gap: 5px;  /* Reduce the space between controls */
+            }
+
+            button {
+                font-size: 16px;  /* Increase button size for easier tapping */
+                padding: 8px 15px; /* Adjust button size for touch interfaces */
+            }
+
+            #cart-total {
+                text-align: center;  /* Center the total on smaller screens */
+                margin-top: 15px;
+            }
+        }
+
+        /* Media Queries for Mobile (up to 600px) */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Add some padding for small screens */
+            }
+
+            .container {
+                padding: 10px;  /* Reduce padding for mobile devices */
+            }
+
+            .medicine-item {
+                flex-direction: column;  /* Stack items vertically */
+                align-items: flex-start;  /* Align items to the start */
+                margin-bottom: 10px;  /* Add spacing between items */
+            }
+
+            .quantity-controls {
+                flex-direction: column;  /* Stack quantity controls vertically */
+                align-items: center;  /* Center controls for smaller screens */
+                gap: 8px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px 20px;  /* Adjust button size for small screens */
+                width: 100%;  /* Make buttons take full width */
+            }
+
+            #cart-total {
+                text-align: center;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="{% static 'images/logo.webp' %}" alt="Logo" class="logo">
+    </div>
+    {% block content %}    
+{% endblock %}
+</body>
+</html>

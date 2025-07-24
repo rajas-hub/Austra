@@ -1,0 +1,99 @@
+{% load static %} {% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% trans "Scanner Instructions" %}</title>
+    <style>
+      .instruction-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      .steps {
+        margin: 30px 0;
+        padding-left: 20px;
+      }
+      .steps li {
+        margin: 15px 0;
+        line-height: 1.6;
+      }
+      #startScanButton {
+        background: #4b3f6c;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      .scanner-diagram {
+        width: 300px;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f4f4f9">
+    <div class="instruction-container">
+        <h1>{% trans "Scanner Instructions" %}</h1>
+<p>{% trans "1.Ensure the prescription paper is clean and free from any folds or creases." %}</br>
+    {% trans "2.Remove any clips, staples, or extra attachments." %}</br>
+   {% trans " 3.Hold the prescription with the text side facing downward." %}</br>
+   {% trans "4.Ensure the title of the page enters the scanner first." %}</br>
+    {% trans "5.Keep the paper straight to avoid misalignment during scanning." %}</br>
+    {% trans "6.Gently slide the prescription into the scanner’s input slot." %}</br>
+    {% trans "7.Ensure it fits properly within the scanner’s guide edges." %}</br>
+   {% trans " 8.Follow the scanner’s instructions to initiate the scan." %}</br>
+    {% trans "9.Avoid pulling the paper while it is being scanned." %}</br>
+    {% trans "10.Once scanning is complete, carefully remove the prescription from the output tray." %}</br>
+    {% trans "11.Check the scanned copy for clarity and completeness." %}
+</p>
+      <!-- Keep existing instruction content -->
+      <img src="{% static 'scanner1.png' %}" alt="Upload from System" />
+      <button id="startScanButton">{% trans "Start Scanning" %}</button>
+      <div class="loading-spinner" id="loadingSpinner"></div>
+      <div id="errorMessage" style="color: red; margin-top: 10px"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("startScanButton")
+        .addEventListener("click", async () => {
+          const button = document.getElementById("startScanButton");
+          const spinner = document.getElementById("loadingSpinner");
+          const errorMsg = document.getElementById("errorMessage");
+
+          button.disabled = true;
+          spinner.style.display = "block";
+          errorMsg.textContent = "";
+
+          try {
+            const response = await fetch("{% url 'scan_image' %}", {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+              },
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              window.location.href = "{% url 'selectmedicine' %}";
+            } else {
+              errorMsg.textContent = result.error || "Scanning failed";
+            }
+          } catch (error) {
+            errorMsg.textContent = "Scanner connection failed";
+          } finally {
+            button.disabled = false;
+            spinner.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!-- templates/medicine_info.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Information</title>
+</head>
+<body>
+    <h1>Extracted Medicine Information</h1>
+
+    {% if medicine_info %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Duration</th>
+                    <th>Measure</th>
+                    <th>Instruction</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in medicine_info %}
+                    <tr>
+                        <td>{{ item.Medicine }}</td>
+                        <td>{{ item.Dosage }}</td>
+                        <td>{{ item.Duration }}</td>
+                        <td>{{ item.Measure }}</td>
+                        <td>{{ item.Instruction }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No medicine information extracted.</p>
+    {% endif %}
+
+    <p><a href="{{ extracted_info_path }}" target="_blank">Click here to view the extracted information file</a></p>
+</body>
+</html>

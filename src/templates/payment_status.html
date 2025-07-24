@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+{% endblock %}
+
+{% block content %}
+  <!-- Payment Status -->
+  {% if status %}
+    <div class="container" style="text-align: center">
+      <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 80px; color: green"></i>
+      <h2>Thank You. Take Care</h2>
+    </div>
+  {% else %}
+    <div class="container" style="text-align: center">
+      <i class="fa fa-times-circle" aria-hidden="true" style="font-size: 80px; color: red"></i>
+      <h2>Sorry, Payment Failed! Try Again.</h2>
+    </div>
+  {% endif %}
+
+  <!-- Go Back Button -->
+  <div class="text-center mt-4">
+    <a href="{% url 'medicliq_payment:payment' %}" class="btn btn-primary">Go Back</a>
+  </div>
+
+  <!-- Recent Transactions Table -->
+  {% if last_10 %}
+    <div class="container mt-5">
+      <h4 style="text-align:center;">Recent Transactions</h4>
+      <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark text-center">
+          <tr>
+            <th>Sr. No</th>
+            <th>Payment ID</th>
+            <th>Amount (₹)</th>
+            <th>Date & Time</th>
+            <th>Med A</th>
+            <th>Med B</th>
+            <th>Med C</th>
+            <th>Med D</th>
+            <th>Med E</th>
+            <th>Med F</th>
+            <th>Med G</th>
+            <th>Med H</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in last_10 %}
+            <tr class="text-center">
+              <td>{{ entry.srno }}</td>
+              <td>{{ entry.payment_id }}</td>
+              <td>{{ entry.amount }}</td>
+              <td>{{ entry.time_date }}</td>
+              <td>{{ entry.medastock }}</td>
+              <td>{{ entry.medbstock }}</td>
+              <td>{{ entry.medcstock }}</td>
+              <td>{{ entry.meddstock }}</td>
+              <td>{{ entry.medestock }}</td>
+              <td>{{ entry.medfstock }}</td>
+              <td>{{ entry.medgstock }}</td>
+              <td>{{ entry.medhstock }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      // Auto-refresh after 3 seconds to show new transaction
+      setTimeout(function() {
+          window.location.reload();
+      }, 3000);
+    </script>
+  {% endif %}
+{% endblock %}

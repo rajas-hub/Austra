@@ -1,0 +1,13 @@
+<h1>Prescription Details</h1>
+<p><strong>Patient Name:</strong> {{ details.Patient Name }}</p>
+<p><strong>Phone Number:</strong> {{ details.Phone Number }}</p>
+<h2>Medicine Details:</h2>
+<ul>
+    {% for medicine in details.Medicine Details %}
+    <li>
+        <strong>Name:</strong> {{ medicine.Medicine Name }}<br>
+        <strong>Duration:</strong> {{ medicine.Duration }}<br>
+        <strong>Measure:</strong> {{ medicine.Measure }}
+    </li>
+    {% endfor %}
+</ul>

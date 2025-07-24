@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose Language - MediCliq</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        background-color: #4b3f6c;
+        color: white;
+        padding: 20px;
+        font-size: 24px;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .language-selection h2 {
+        font-size: 22px;
+        color: #333;
+      }
+      .language-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+        align-items: center;
+      }
+      .language-buttons button {
+        width: 200px;
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        background-color: #4b3f6c;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      .language-buttons button:hover {
+        background-color: #3a2e5d;
+      }
+      footer {
+        margin-top: 50px;
+        padding: 15px;
+        background-color: #4b3f6c;
+        color: white;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <h1>Auṣatra</h1>
+    </div>
+
+    <div class="container">
+      <div class="language-selection">
+        <h2>Please choose your language||भाषा निवडा ||भाषा चुने :</h2>
+        <div class="language-buttons">
+          <button onclick="set_language('en')">English</button>
+          <button onclick="set_language('hi')">हिंदी</button>
+          <button onclick="set_language('mr')">मराठी</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 MediCliq. All rights reserved.</p>
+    </footer>
+
+    <script>
+      function set_language(lang) {
+        fetch("/i18n/setlang/", {
+          // Use your actual language switch endpoint
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+          body: `language=${lang}`,
+        }).then((response) => {
+          if (response.ok) {
+            window.location.href = "{% url 'p_method' %}"; // Redirect to p_method page
+          }
+        });
+      }
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          let cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.startsWith(name + "=")) {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+    </script>
+  </body>
+</html>

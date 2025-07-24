@@ -1,0 +1,301 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Auṣatra</title>
+    <style>
+      body {
+        background-color: #f4f4f9;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+        width: 1000px;
+        margin: auto;
+        padding: 30px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      /* Section Styling */
+      .section-box {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        flex: 3.5;
+        text-align: center;
+      }
+
+      .heading h1 {
+        color: #4b3f6c;
+        font-size: 4.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .heading h2 {
+        font-size: 1.25rem;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      /* Start Button */
+      #glowButton {
+        position: relative;
+        top: 120px;
+        background-color: #4b3f6c;
+        color: white;
+        padding: 30px 45px;
+        border: none;
+        border-radius: 20px;
+        width: 100%;
+        font-size: 2rem;
+        cursor: pointer;
+        box-shadow: 0 0 15px rgba(75, 63, 108, 0.6);
+        transition: all 0.3s ease;
+      }
+
+      #glowButton:hover {
+        background-color: #6d5b98;
+        box-shadow: 0 0 25px rgba(75, 63, 108, 0.9);
+        transform: translateY(-3px);
+      }
+
+      /* Easy Access Section */
+
+      .easy-access h3 {
+        color: #4b3f6c;
+        margin-bottom: 20px;
+      }
+
+      .product-card {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+
+      .product-image {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .product-info {
+        flex: 1;
+        padding-left: 15px;
+      }
+
+      .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 50%;
+        background: #4b3f6c;
+        color: white;
+        cursor: pointer;
+      }
+
+      .quantity-input {
+        width: 40px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .quick-buy-btn {
+        background: #00b894;
+        border-radius: 15px;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 25px;
+        margin-top: 20px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .row {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <!-- Left Section: Start Transaction -->
+        <div class="section-box">
+          <div class="heading">
+            <h1>Auṣatra</h1>
+            <h2 style="position: relative; top: 100px">
+              Press the button below to begin the transaction.
+            </h2>
+          </div>
+          <button type="button" id="glowButton">START</button>
+        </div>
+
+        <!-- Right Section: Easy Access Essentials -->
+        <div class="section-box easy-access" style="flex: 1">
+          <h3>Easy Access Essentials</h3>
+
+          <div class="product-card">
+            <img
+              src="{% static 'sanitary.png' %}"
+              alt="Sanitary Napkins"
+              class="product-image"
+            />
+            <div class="product-info">
+              <h5>Sanitary Napkins</h5>
+              <p>₹25 per pack</p>
+              <div class="quantity-controls">
+                <button
+                  class="quantity-btn"
+                  onclick="adjustQuantity(-1, 'sanitary')"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="sanitary-qty"
+                  class="quantity-input"
+                  value="0"
+                  min="0"
+                />
+                <button
+                  class="quantity-btn"
+                  onclick="adjustQuantity(1, 'sanitary')"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <img
+              src="{% static 'firstaid.png' %}"
+              alt="First Aid Kit"
+              class="product-image"
+            />
+            <div class="product-info">
+              <h5>First Aid Kit</h5>
+              <p>₹150 per kit</p>
+              <div class="quantity-controls">
+                <button
+                  class="quantity-btn"
+                  onclick="adjustQuantity(-1, 'firstaid')"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="firstaid-qty"
+                  class="quantity-input"
+                  value="0"
+                  min="0"
+                />
+                <button
+                  class="quantity-btn"
+                  onclick="adjustQuantity(1, 'firstaid')"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="quick-buy-btn"
+            onclick="processQuickBuy()"
+            style="border-radius: 15px"
+          >
+            Quick Buy (₹<span id="total-amount">0</span>)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function clearCarts() {
+        sessionStorage.removeItem("cartData");
+        sessionStorage.removeItem("quickCart");
+      }
+
+      function adjustQuantity(change, product) {
+        const input = document.getElementById(`${product}-qty`);
+        let newVal = parseInt(input.value) + change;
+        input.value = newVal < 0 ? 0 : newVal;
+        updateTotal();
+      }
+
+      function updateTotal() {
+        const total =
+          document.getElementById("sanitary-qty").value * 25 +
+          document.getElementById("firstaid-qty").value * 150;
+        document.getElementById("total-amount").textContent = total;
+      }
+
+      function processQuickBuy() {
+        clearCarts();
+        const cartItems = {
+          timestamp: Date.now(),
+          items: [],
+        };
+
+        const addItem = (id, name, price) => {
+          const qty = parseInt(document.getElementById(id).value);
+          if (qty > 0)
+            cartItems.items.push({
+              name: name,
+              type: "Essential Product",
+              quantity: qty,
+              price: qty * price,
+            });
+        };
+
+        addItem("sanitary-qty", "Sanitary Napkins", 25);
+        addItem("firstaid-qty", "First Aid Kit", 150);
+
+        if (cartItems.items.length === 0) {
+          alert("Please select at least one item!");
+          return;
+        }
+
+        sessionStorage.setItem("quickCart", JSON.stringify(cartItems));
+        window.location.href = "{% url 'medicliq_payment:cart2' %}";
+      }
+
+      document.getElementById("glowButton").addEventListener("click", () => {
+        clearCarts();
+        window.location.href = "{% url 'language_selection' %}";
+      });
+
+      window.addEventListener("load", clearCarts);
+    </script>
+  </body>
+</html>

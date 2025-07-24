@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}MediCliq{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Medicine Payment</h1>
+        {% csrf_token %}
+        {% crispy form %}
+        <br/>
+        {% if payment %}
+            <!-- Razorpay Payment Button Form -->
+            <form action="{% url 'payment_status' %}" method="POST">
+                {% csrf_token %}
+                <script
+                        src="https://checkout.razorpay.com/v1/checkout.js"
+                        data-key="rzp_test_oIP043kHtRWfHZ"
+                        data-amount="{{ payment.amount }}"
+                        data-currency="{{ payment.currency }}"
+                        data-order_id="{{ payment.id }}"
+                        data-buttontext="Pay with Razorpay"
+                        data-name="MediCliq"
+                        data-description="Smart Medicine Dispensing System"
+                        data-image="https://example.com/your_logo.jpg"
+                        data-prefill.name="Rajas Nandgaonkar"
+                        data-prefill.email="you@example.com"
+                        data-theme.color="#00308F"
+                    ></script>
+                <input type="hidden" custom="Hidden Element" name="hidden">
+            </form>
+        {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,433 @@
+{% load static %} {% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% trans "Auṣatra - Cart & Payment" %}</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+      
+      .cart-container {
+        position: relative;
+        top: 50px;
+        margin: 0 auto;
+        background: rgba(75, 63, 108, 0.1);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+      }
+      
+      .cart-table {
+        width: 100%;
+        margin: 20px 0;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      
+      .cart-table th {
+        color: white;
+        background: #4b3f6c;
+        padding: 12px;
+        text-align: left;
+      }
+      
+      .cart-table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        text-align: left;
+      }
+      
+      .product-type {
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 4px;
+      }
+      
+      #checkoutButton {
+        background-color: #4b3f6c;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 60%;
+        margin-top: 20px;
+      }
+      
+      #checkoutButton:hover {
+        background-color: #3a2f56;
+        transform: translateY(-2px);
+      }
+      
+      #checkoutButton:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+      
+      .error-message {
+        color: #d32f2f;
+        background-color: #ffebee;
+        padding: 12px;
+        border-radius: 6px;
+        margin: 15px 0;
+        display: none;
+      }
+      
+      .loading-spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      @media (max-width: 600px) {
+        .cart-container {
+          top: 20px;
+          width: 95%;
+          padding: 15px;
+        }
+        
+        .cart-table th, 
+        .cart-table td {
+          padding: 8px;
+          font-size: 14px;
+        }
+        
+        #checkoutButton {
+          width: 80%;
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="cart-container">
+      <h2>{% trans "Your Shopping Cart" %}</h2>
+      
+      <!-- Error message container -->
+      <div id="errorMessage" class="error-message"></div>
+      
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>{% trans "Item" %}</th>
+            <th>{% trans "Qty" %}</th>
+            <th>{% trans "Price" %}</th>
+          </tr>
+        </thead>
+        <tbody id="cartItemsContainer">
+          <!-- Server-rendered items (if session has data) -->
+          {% for item in cart_data %}
+          <tr>
+            <td>
+              {{ item.name }}
+              {% if item.type %}
+              <div class="product-type">{{ item.type }}</div>
+              {% endif %}
+            </td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.price|floatformat:2 }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" style="text-align: center; padding: 20px;">
+              {% trans "Your cart is empty" %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      <div style="font-size: 18px; font-weight: bold; margin: 25px 0">
+        <strong>{% trans "Total Price:" %}</strong> ₹<span id="totalAmount">{{ total_amount|floatformat:2 }}</span>
+      </div>
+      
+      <button id="checkoutButton" {% if not cart_data %}disabled{% endif %}>
+        {% trans "Proceed to Checkout" %}
+      </button>
+    </div>
+  
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        // DOM elements
+        const checkoutButton = document.getElementById("checkoutButton");
+        const errorMessage = document.getElementById("errorMessage");
+        const cartItemsContainer = document.getElementById("cartItemsContainer");
+        const totalAmountElement = document.getElementById("totalAmount");
+        
+        // State variables
+        let cartData = [];
+        let razorpayInitialized = false;
+        
+        // Check if Razorpay is loaded
+        if (typeof Razorpay === 'undefined') {
+          showError("{% trans 'Payment system is currently unavailable. Please try again later.' %}");
+          checkoutButton.disabled = true;
+          return;
+        } else {
+          razorpayInitialized = true;
+        }
+        
+        /**
+         * Display error message
+         * @param {string} message - Error message to display
+         * @param {number} [duration=5000] - How long to show the message (ms)
+         */
+        function showError(message, duration = 5000) {
+          errorMessage.textContent = message;
+          errorMessage.style.display = 'block';
+          
+          if (duration > 0) {
+            setTimeout(() => {
+              errorMessage.style.display = 'none';
+            }, duration);
+          }
+        }
+        
+        /**
+         * Validate cart data from sessionStorage
+         * @param {object} cart - Cart data from sessionStorage
+         * @returns {array} Validated cart items
+         */
+        function validateCart(cart) {
+          try {
+            const MAX_AGE = 300000; // 5 minutes
+            if (!cart || !cart.timestamp || Date.now() - cart.timestamp > MAX_AGE) {
+              return [];
+            }
+            
+            // Validate each item in the cart
+            return cart.items.filter(item => {
+              return item && 
+                     item.name && 
+                     typeof item.quantity === 'number' && 
+                     typeof item.price === 'number' &&
+                     item.price > 0 &&
+                     item.quantity > 0;
+            });
+          } catch (error) {
+            console.error("Cart validation error:", error);
+            return [];
+          }
+        }
+        
+        /**
+         * Update cart display with new data
+         * @param {array} items - Cart items to display
+         */
+        function updateCartDisplay(items) {
+          if (items.length === 0) {
+            cartItemsContainer.innerHTML = `
+              <tr>
+                <td colspan="3" style="text-align: center; padding: 20px;">
+                  {% trans "Your cart is empty" %}
+                </td>
+              </tr>
+            `;
+            totalAmountElement.textContent = "0.00";
+            checkoutButton.disabled = true;
+            return;
+          }
+          
+          let computedTotal = 0;
+          const updatedRows = items.map(item => {
+            const price = parseFloat(item.price);
+            const quantity = parseInt(item.quantity);
+            const rowTotal = price ;
+            computedTotal += rowTotal;
+            
+            return `
+              <tr>
+                <td>${item.name}${item.type ? `<div class="product-type">${item.type}</div>` : ""}</td>
+                <td>${quantity}</td>
+                <td>₹${price.toFixed(2)}</td>
+              </tr>
+            `;
+          }).join("");
+          
+          cartItemsContainer.innerHTML = updatedRows;
+          totalAmountElement.textContent = computedTotal.toFixed(2);
+          checkoutButton.disabled = false;
+        }
+        
+        /**
+         * Initialize payment process
+         */
+        async function initializePayment() {
+          try {
+            // Validate cart data
+            if (cartData.length === 0) {
+              showError("{% trans 'Your cart is empty. Please add items before checkout.' %}");
+              return;
+            }
+            
+            // Get total amount
+            const totalAmount = parseFloat(totalAmountElement.textContent);
+            if (isNaN(totalAmount) || totalAmount <= 0) {
+              showError("{% trans 'Invalid total amount. Please refresh the page.' %}");
+              return;
+            }
+            
+            // Minimum amount check (1 INR)
+            if (totalAmount < 1) {
+              showError("{% trans 'Minimum payment amount is ₹1. Please add more items.' %}");
+              return;
+            }
+            
+            // Set loading state
+            checkoutButton.disabled = true;
+            checkoutButton.innerHTML = `
+              <span class="loading-spinner"></span>
+              {% trans "Processing..." %}
+            `;
+            
+            // Create Razorpay order
+            const response = await fetch("{% url 'medicliq_payment:create_razorpay_order' %}", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+              },
+              body: JSON.stringify({
+                amount: Math.round(totalAmount ), // Convert to paise
+                items: cartData
+              })
+            });
+            
+            if (!response.ok) {
+              throw new Error("{% trans 'Failed to create payment order' %}");
+            }
+            
+            const { razorpay_order_id, error } = await response.json();
+            
+            if (error) {
+              throw new Error(error);
+            }
+            
+            if (!razorpay_order_id) {
+              throw new Error("{% trans 'Invalid order ID received from server' %}");
+            }
+            
+            // Initialize Razorpay checkout
+            const rzp = new Razorpay({
+              key: "{{ RAZORPAY_KEY_ID }}",
+              amount: Math.round(totalAmount),
+              currency: "INR",
+              order_id: razorpay_order_id,
+              name: "{% trans 'Auṣatra' %}",
+              description: "{% trans 'Medicine Purchase' %}",
+              image: "{% static 'path/to/your/logo.png' %}",
+              handler: function(response) {
+                // On successful payment
+                sessionStorage.clear();
+                window.location.href = "/payment/success/";
+              },
+              modal: {
+                ondismiss: function() {
+                  console.log("Payment modal was closed by user");
+                }
+              }
+            });
+            
+            // Payment failed handler
+            rzp.on('payment.failed', function(response) {
+              const errorMsg = response.error ? 
+                `${response.error.description} (Code: ${response.error.code})` : 
+                "{% trans 'Unknown error occurred' %}";
+              
+              showError(`{% trans 'Payment failed:' %} ${errorMsg}`, 10000);
+              console.error("Payment failed:", response.error);
+            });
+            
+            // Open payment dialog
+            rzp.open();
+            
+          } catch (error) {
+            console.error("Payment initialization error:", error);
+            showError(`{% trans 'Payment error:' %} ${error.message}`, 8000);
+          } finally {
+            // Reset button state
+            checkoutButton.disabled = false;
+            checkoutButton.textContent = "{% trans 'Proceed to Checkout' %}";
+          }
+        }
+        
+        // Main execution flow
+        try {
+          // Retrieve and validate cart data from sessionStorage
+          const quickCart = validateCart(JSON.parse(sessionStorage.getItem("quickCart") || "null"));
+          const storedCart = validateCart(JSON.parse(sessionStorage.getItem("cartData") || "null"));
+          cartData = [...quickCart, ...storedCart];
+          
+          // Update server with client-side cart data if needed
+          if (cartData.length > 0) {
+            try {
+              const response = await fetch(window.location.href, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ cart_data: cartData })
+              });
+              
+              if (!response.ok) {
+                throw new Error("{% trans 'Failed to update cart on server' %}");
+              }
+              
+              const result = await response.json();
+              console.log("Server cart update response:", result);
+              
+              // Clear old sessionStorage data after successful update
+              sessionStorage.removeItem("quickCart");
+              sessionStorage.removeItem("cartData");
+              
+              // Update display with fresh data if server returned something
+              if (result.cart_data) {
+                cartData = result.cart_data;
+              }
+            } catch (error) {
+              console.error("Error updating cart data on server:", error);
+              // Continue with client-side data even if server update fails
+            }
+          }
+          
+          // Update cart display
+          updateCartDisplay(cartData);
+          
+          // Set up event listeners
+          checkoutButton.addEventListener("click", initializePayment);
+          
+        } catch (error) {
+          console.error("Initialization error:", error);
+          showError("{% trans 'Error loading cart. Please refresh the page.' %}");
+        }
+      });
+    </script>
+  </body>
+</html>

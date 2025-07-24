@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    .low-stock {
+      background-color: #fff3cd; /* Light yellow for low stock */
+    }
+    .critical-stock {
+      background-color: #f8d7da; /* Light red for critical stock */
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    @media (max-width: 768px) {
+      .table-container {
+        font-size: 0.9rem;
+      }
+      th, td {
+        padding: 0.3rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <!-- Payment Status -->
+  <div class="container" style="text-align: center; margin-top: 30px;">
+    {% if status %}
+      <i class="fa fa-check-circle" aria-hidden="true" style="font-size: 80px; color: green"></i>
+      <h2>Thank You. Take Care</h2>
+    {% else %}
+      <i class="fa fa-times-circle" aria-hidden="true" style="font-size: 80px; color: red"></i>
+      <h2>Sorry, Payment Failed! Try Again.</h2>
+    {% endif %}
+  </div>
+
+  <!-- Transaction History Table -->
+  <div class="container mt-5">
+    <h3 class="text-center mb-4">Recent Transactions</h3>
+    <div class="table-container">
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+          <tr class="text-center">
+            <th>Sr. No</th>
+            <th>Payment ID</th>
+            <th>Amount</th>
+            <th>Date & Time</th>
+            <th>Med A</th>
+            <th>Med B</th>
+            <th>Med C</th>
+            <th>Med D</th>
+            <th>Med E</th>
+            <th>Med F</th>
+            <th>Med G</th>
+            <th>Med H</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in entries_1_to_10 %}
+            <tr class="text-center">
+              <td>{{ entry.srno }}</td>
+              <td>{{ entry.payment_id|truncatechars:12 }}</td>
+              <td>₹{{ entry.amount }}</td>
+              <td>{{ entry.time_date|date:"d M Y H:i" }}</td>
+              <td class="{% if entry.medastock < 5 %}critical-stock{% elif entry.medastock < 15 %}low-stock{% endif %}">
+                {{ entry.medastock }}
+              </td>
+              <td class="{% if entry.medbstock < 5 %}critical-stock{% elif entry.medbstock < 15 %}low-stock{% endif %}">
+                {{ entry.medbstock }}
+              </td>
+              <td class="{% if entry.medcstock < 5 %}critical-stock{% elif entry.medcstock < 15 %}low-stock{% endif %}">
+                {{ entry.medcstock }}
+              </td>
+              <td class="{% if entry.meddstock < 5 %}critical-stock{% elif entry.meddstock < 15 %}low-stock{% endif %}">
+                {{ entry.meddstock }}
+              </td>
+              <td class="{% if entry.medestock < 5 %}critical-stock{% elif entry.medestock < 15 %}low-stock{% endif %}">
+                {{ entry.medestock }}
+              </td>
+              <td class="{% if entry.medfstock < 5 %}critical-stock{% elif entry.medfstock < 15 %}low-stock{% endif %}">
+                {{ entry.medfstock }}
+              </td>
+              <td class="{% if entry.medgstock < 5 %}critical-stock{% elif entry.medgstock < 15 %}low-stock{% endif %}">
+                {{ entry.medgstock }}
+              </td>
+              <td class="{% if entry.medhstock < 5 %}critical-stock{% elif entry.medhstock < 15 %}low-stock{% endif %}">
+                {{ entry.medhstock }}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="12" class="text-center">No transactions found</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Additional Information -->
+  <div class="container mt-4 text-center">
+    <div class="alert alert-info">
+      <p class="mb-0">
+        <i class="fas fa-info-circle"></i> 
+        Stock levels below 5 are highlighted in red, below 15 in yellow
+      </p>
+    </div>
+  </div>
+{% endblock %}

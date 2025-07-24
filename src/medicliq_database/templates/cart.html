@@ -1,0 +1,181 @@
+{% load i18n %} {% load static %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% trans "Auṣatra - Cart & Payment" %}</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f9;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .cart-container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        width: 60%;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      h2 {
+        color: #4b3f6c;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+      }
+
+      th {
+        background: #e8e3f3;
+        color: #4b3f6c;
+      }
+
+      .total-price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #4b3f6c;
+        margin-bottom: 20px;
+      }
+
+      #checkoutButton {
+        background-color: #4b3f6c;
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(75, 63, 108, 0.6);
+        transition: all 0.3s ease;
+      }
+
+      #checkoutButton:hover {
+        background-color: #6d5b98;
+        box-shadow: 0 0 20px rgba(75, 63, 108, 0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cart-container">
+      <h2>{% trans "Your Shopping Cart" %}</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>{% trans "Medicine" %}</th>
+            <th>{% trans "Qty" %}</th>
+            <th>{% trans "Price (₹)" %}</th>
+          </tr>
+        </thead>
+        <tbody id="cartItemsContainer"></tbody>
+      </table>
+
+      <div class="total-price">
+        <strong>{% trans "Total Price:" %}</strong> ₹<span id="totalAmount"
+          >0</span
+        >
+      </div>
+
+      <button type="button" id="checkoutButton">
+        {% trans "Proceed to Checkout" %}
+      </button>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let cartData = JSON.parse(sessionStorage.getItem("cartData")) || [];
+        let cartItemsContainer = document.getElementById("cartItemsContainer");
+        let totalAmountElement = document.getElementById("totalAmount");
+
+        function loadCart() {
+          cartItemsContainer.innerHTML = "";
+          let totalAmount = 0;
+
+          cartData.forEach((item) => {
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                        <td>${item.name}</td>
+                        <td>${item.strips}</td>
+                        <td>₹${item.price.toFixed(2)}</td>
+                    `;
+            cartItemsContainer.appendChild(row);
+            totalAmount += item.price;
+          });
+
+          totalAmountElement.textContent = totalAmount.toFixed(2);
+          return totalAmount;
+        }
+
+        let totalAmount = loadCart() * 100; // Convert to paise for Razorpay
+
+        document
+          .getElementById("checkoutButton")
+          .addEventListener("click", function () {
+            orderId = "{{payment.id}}"; // Passed from backend
+
+            let options = {
+              key: "rzp_test_oIP043kHtRWfHZ",
+              amount: totalAmount,
+              currency: "INR",
+              name: "{% trans 'Auṣatra' %}",
+              description: "{% trans 'Smart Medicine Dispensing System' %}",
+              image: "https://example.com/your_logo.jpg",
+              order_id: orderId,
+              prefill: {
+                name: "User",
+                email: "user@example.com",
+              },
+              theme: {
+                color: "#4b3f6c",
+              },
+              handler: function (response) {
+                fetch("{% url 'medicliq_payment:payment_status' %}", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}",
+                  },
+                  body: new URLSearchParams({
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.status === "Payment successful") {
+                      window.location.href = "/payment/success/";
+                    } else {
+                      alert("Payment Successful. Medicines Dispensing");
+                    }
+                  });
+              },
+            };
+
+            let rzp1 = new Razorpay(options);
+            rzp1.open();
+          });
+      });
+    </script>
+  </body>
+</html>

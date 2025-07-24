@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'med_app/style2.css' %}" />
+    <title>Upload Prescription</title>
+  </head>
+
+  <body>
+    <div class="pg-2">
+      <h3>Please insert the prescription image below for analysis.</h3>
+    </div>
+
+    <!-- Image Preview Section -->
+    <div class="animation-container">
+      <img
+        id="previewImage"
+        src="{% static 'med_app/animation.gif' %}"
+        alt="Scanning Animation"
+      />
+    </div>
+
+    <!-- Image Upload Form -->
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input
+        type="file"
+        id="imageInput"
+        name="prescription_image"
+        accept="image/*"
+        required
+      />
+      <button type="submit">Upload Prescription</button>
+    </form>
+
+    <script>
+      // Image preview logic
+      const imageInput = document.getElementById("imageInput");
+      const previewImage = document.getElementById("previewImage");
+      const uploadForm = document.getElementById("uploadForm");
+
+      imageInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => (previewImage.src = e.target.result);
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Handle form submission
+      uploadForm.addEventListener("submit", (event) => {
+        if (!imageInput.files.length) {
+          alert("Please select an image.");
+          event.preventDefault();
+        }
+      });
+    </script>
+  </body>
+</html>

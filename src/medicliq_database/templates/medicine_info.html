@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracted Medicine Information</title>
+</head>
+<body>
+    <h1>Extracted Medicine Information</h1>
+    
+    {% if medicine_info %}
+        <ul>
+        {% for item in medicine_info %}
+            <li>
+                <strong>Medicine:</strong> {{ item.Medicine }}<br>
+                <strong>Dosage:</strong> {{ item.Dosage }}<br>
+                <strong>Duration:</strong> {{ item.Duration }}<br>
+                <strong>Measure:</strong> {{ item.Measure }}<br>
+                <strong>Instruction:</strong> {{ item.Instruction }}<br>
+                <hr>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No medicine information extracted.</p>
+    {% endif %}
+
+    <br>
+    <p>
+        <strong>Click here to view the extracted information file:</strong><br>
+        <a href="{{ extracted_info_path }}" download>Download extracted_info.txt</a>
+    </p>
+
+</body>
+</html>

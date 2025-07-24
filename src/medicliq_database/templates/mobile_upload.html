@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mobile Upload</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { padding: 20px; text-align: center; }
+        form { margin: 30px auto; max-width: 400px; }
+        input[type="file"] { margin: 20px 0; }
+        button {
+            padding: 12px 25px;
+            background: #4b3f6c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload Prescription</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="hidden" name="session" value="{{ request.GET.session }}">
+        <input type="file" name="prescription_image" accept="image/*" required>
+        <button type="submit">Upload Image</button>
+    </form>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch(`/database/handle_mobile_upload/?session=${new URLSearchParams(window.location.search).get('session')}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Upload failed');
+                }
+                
+                if (result.success) {
+                    alert('✅ Upload successful!\nKeep this page open until computer updates.');
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        });
+        </script>
+</body>
+</html>

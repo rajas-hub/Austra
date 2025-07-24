@@ -1,0 +1,31 @@
+{
+    "Medicines": [
+        {
+            "Medicinename": "meda",
+            "quant": 10,
+            "days": 10,
+            "medperday": 1.0,
+            "Available": 1,
+            "stripsize": 10,
+            "ppu": 74.2
+        },
+        {
+            "Medicinename": "medb",
+            "quant": 40,
+            "days": 10,
+            "medperday": 4.0,
+            "Available": 1,
+            "stripsize": 5,
+            "ppu": 24.0
+        },
+        {
+            "Medicinename": "medc",
+            "quant": 30,
+            "days": 15,
+            "medperday": 2.0,
+            "Available": 0,
+            "stripsize": 5,
+            "ppu": 24.0
+        }
+    ]
+}

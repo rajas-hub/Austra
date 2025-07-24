@@ -1,0 +1,25 @@
+{
+    "Medicines": [
+        {
+            "Medicine": "MedA",
+            "Dosage": "1-0-0",
+            "Duration": "10 days",
+            "Measure": "1",
+            "Instruction": "Before Meal"
+        },
+        {
+            "Medicine": "MedB",
+            "Dosage": "1-0-1",
+            "Duration": "10 days",
+            "Measure": "2",
+            "Instruction": "After Meal"
+        },
+        {
+            "Medicine": "Medc",
+            "Dosage": "1-0-1",
+            "Duration": "15 days",
+            "Measure": "1",
+            "Instruction": "After Meal"
+        }
+    ]
+}

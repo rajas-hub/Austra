@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            padding: 20px;
+        }
+        .scan-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .scan-btn:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        function startScanning() {
+            document.getElementById("status").innerText = "Scanning... Please wait.";
+
+            fetch("{% url 'scan_image' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("status").innerHTML = "Scan Complete!<br>Image saved at: " + data.image_path;
+                } else {
+                    document.getElementById("status").innerText = "Error: " + data.message;
+                }
+            })
+            .catch(error => {
+                document.getElementById("status").innerText = "Request failed: " + error;
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Scan an Image</h1>
+        <button class="scan-btn" onclick="startScanning()">Start Scan</button>
+        <p id="status"></p>
+    </div>
+
+</body>
+</html>

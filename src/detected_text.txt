@@ -1,0 +1,46 @@
+Detected text: '1/7125, 5.17 PM' (Original: '1/7125, 5.17 PM') with confidence: 0.87
+Detected text: 'Clinicia' (Original: 'Clinicia') with confidence: 0.89
+Detected text: 'Practice Management for Doctors' (Original: 'Practice Management for Doctors') with confidence: 0.73
+Detected text: 'Aagya Clinic' (Original: 'Aagya Clinic') with confidence: 0.99
+Detected text: 'Atharv' (Original: 'Atharv') with confidence: 1.00
+Detected text: 'Andhare (C1)' (Original: 'Andhare (C1)') with confidence: 0.79
+Detected text: 'Dr. Utkarsh Agrawal' (Original: 'Dr. Utkarsh Agrawal') with confidence: 0.80
+Detected text: 'Male/ 21' (Original: 'Male/ 21') with confidence: 0.53
+Detected text: 'MBBS' (Original: 'MBBS') with confidence: 1.00
+Detected text: '7219824033 ,' (Original: '7219824033 ,') with confidence: 0.72
+Detected text: 'atharvandhare2o03@gmail' (Original: 'atharvandhare2o03@gmail') with confidence: 0.74
+Detected text: 'Registration' (Original: 'Registration') with confidence: 1.00
+Detected text: 'No.: 123456' (Original: 'No.: 123456') with confidence: 0.85
+Detected text: 'PRESCRIPTION' (Original: 'PRESCRIPTION') with confidence: 1.00
+Detected text: 'Date: 07-Jan-2025 12:00 am' (Original: 'Date: 07-Jan-2025 12:00 am') with confidence: 0.69
+Detected text: 'Complaint' (Original: 'Complaint') with confidence: 1.00
+Detected text: 'Headache' (Original: 'Headache') with confidence: 0.93
+Detected text: 'Rx' (Original: 'Rx') with confidence: 1.00
+Detected text: 'Medicine' (Original: 'Medicine') with confidence: 0.91
+Detected text: 'Dosage' (Original: 'Dosage') with confidence: 1.00
+Detected text: 'Duration' (Original: 'Duration') with confidence: 1.00
+Detected text: 'Measure' (Original: 'Measure') with confidence: 1.00
+Detected text: 'Instruction' (Original: 'Instruction') with confidence: 0.86
+Detected text: 'Description' (Original: 'Description') with confidence: 1.00
+Detected text: 'MedA' (Original: 'MedA') with confidence: 0.99
+Detected text: '1-0-0' (Original: '1-0-0') with confidence: 0.64
+Detected text: '10 days' (Original: '10 days') with confidence: 0.92
+Detected text: '1' (Original: '1') with confidence: 0.94
+Detected text: 'Before' (Original: 'Before') with confidence: 0.95
+Detected text: 'Meal' (Original: 'Meal') with confidence: 1.00
+Detected text: 'MedB' (Original: 'MedB') with confidence: 1.00
+Detected text: '1-0-1' (Original: '1-0-1') with confidence: 0.60
+Detected text: '10 days' (Original: '10 days') with confidence: 0.92
+Detected text: '2' (Original: '2') with confidence: 1.00
+Detected text: 'After Meal' (Original: 'After Meal') with confidence: 0.99
+Detected text: 'Medc' (Original: 'Medc') with confidence: 0.97
+Detected text: '1-0-1' (Original: '1-0-1') with confidence: 1.00
+Detected text: '15 days' (Original: '15 days') with confidence: 0.88
+Detected text: '1' (Original: '1') with confidence: 1.00
+Detected text: 'After Meal' (Original: 'After Meal') with confidence: 1.00
+Detected text: 'For Aagya Clinic' (Original: 'For Aagya Clinic') with confidence: 0.65
+Detected text: 'Dr.' (Original: 'Dr.') with confidence: 1.00
+Detected text: 'Utkarsh Agrawal' (Original: 'Utkarsh Agrawal') with confidence: 0.93
+Detected text: 'https Ilclinicia com/applweb_apidocument_preview php?document_id-Toddfod2c3e6ce06ec5103e8885b7eg8&document_type-prescrption&p_i_' (Original: 'https Ilclinicia com/applweb_apidocument_preview php?document_id-Toddfod2c3e6ce06ec5103e8885b7eg8&document_type-prescrption&p_i_') with confidence: 0.27
+Detected text: '11' (Original: '11') with confidence: 0.48
+Detected text: 'utk' (Original: 'utk') with confidence: 0.32

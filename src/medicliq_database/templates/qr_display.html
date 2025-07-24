@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan QR Code</title>
+    <style>
+        body { text-align: center; padding: 50px; }
+        img { max-width: 300px; margin: 20px; border: 2px solid #4b3f6c; }
+        #status { color: #4b3f6c; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Scan this QR with your phone</h2>
+    {% if qr_path %}
+        <img src="{{ qr_path }}" alt="QR Code">
+    {% else %}
+        <p>Error generating QR code</p>
+    {% endif %}
+    <div id="status"></div>
+
+    <script>
+        const sessionID = "{{ session_id }}";
+        
+        function checkStatus() {
+            fetch(`/database/check_upload/?session=${sessionID}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Status:', data);  // Debug log
+                    if (data.processed) {
+                        window.location.href = "{% url 'selectmedicine' %}";
+                    } else if (data.status === 'error') {
+                        alert('Error: ' + (data.error || 'Unknown error'));
+                        clearInterval(intervalId);
+                    }
+                });
+        }
+        
+        // Check every 1 second for faster response
+        const intervalId = setInterval(checkStatus, 1000);
+        </script>
+</body>
+</html>

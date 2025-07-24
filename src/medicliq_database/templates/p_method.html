@@ -1,0 +1,85 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% trans "Select Upload Method" %}</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f4f9;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+      }
+
+      h2 {
+        color: #4b3f6c;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        display: flex;
+        gap: 20px;
+      }
+
+      .option {
+        width: 250px;
+        padding: 80px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .option:hover {
+        transform: scale(1.05);
+      }
+
+      .option img {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>{% trans "Choose Upload Method" %}</h2>
+    <div class="container">
+      <div class="option" onclick="redirectToUpload();">
+        <img src="{% static 'systemscan.png' %}" alt="Upload from System" />
+        <p>{% trans "Upload from System" %}</p>
+      </div>
+      <div class="option" onclick="redirectToQRUpload();">
+        <img src="{% static 'qr-scan.gif' %}" alt="Upload via QR">
+        <p>{% trans "Upload from Phone using QR" %}</p>
+      </div>
+      
+        <div class="option" onclick="redirectToScannerInstructions();">
+        <img src="{% static 'scan_return2.gif' %}" alt="Scan Prescription" />
+        <p>{% trans "Scan Prescription using Scanner" %}</p>
+      </div>
+    
+
+    <script>
+      function redirectToUpload() {
+        window.location.href = "{% url 'upload_prescription' %}";
+      }
+
+      function redirectToScannerInstructions() {
+        window.location.href = "{% url 'scanner_instructions' %}";
+    }
+
+      function redirectToQRUpload() {
+        window.location.href = "{% url 'generate_qr' %}";
+    }
+    </script>
+  </body>
+</html>

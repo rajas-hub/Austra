@@ -1,0 +1,178 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% trans "Upload Prescription" %}</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Center the content and style the page */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f4f9;
+        flex-direction: column;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Heading section */
+      .pg-2 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      h3 {
+        color: #4b3f6c;
+        font-size: 1.5rem;
+      }
+
+      /* Image preview and animation container */
+      .animation-container {
+        margin-bottom: 20px;
+      }
+
+      img {
+        max-width: 90%;
+        max-height: 300px;
+        border: 3px solid #4b3f6c;
+        border-radius: 10px;
+      }
+
+      /* File input styling */
+      input[type="file"] {
+        display: none;
+      }
+
+      label {
+        padding: 10px 20px;
+        background-color: #4b3f6c;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      label:hover {
+        background-color: #3a2f54;
+      }
+
+      /* Upload button styling */
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4b3f6c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #3a2f54;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Instruction Section -->
+    <div class="pg-2">
+      <h3>
+        {% trans "Please insert the prescription in the section shown below." %}
+      </h3>
+    </div>
+
+    <!-- Image Preview Section -->
+    <div class="animation-container">
+      <img
+        id="previewImage"
+        src="{% static 'systemscan.png' %}"
+        alt="{% trans 'Scanning Animation' %}"
+      />
+    </div>
+
+    <!-- Form for Uploading Image -->
+    <form id="uploadForm" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="imageInput">{% trans "Choose Image" %}</label>
+      <input
+        type="file"
+        id="imageInput"
+        name="prescription_image"
+        accept="image/*"
+        required
+      />
+      <button type="submit">{% trans "Upload " %}</button>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const imageInput = document.getElementById("imageInput");
+        const previewImage = document.getElementById("previewImage");
+        const uploadForm = document.getElementById("uploadForm");
+
+        // Image preview on selection
+        imageInput.addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              previewImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Form submission via AJAX
+        uploadForm.addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission
+
+          const formData = new FormData(uploadForm);
+
+          fetch("{% url 'upload_prescription' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+              "X-CSRFToken": getCookie("csrftoken"), // CSRF token for Django
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                window.location.href = "{% url 'selectmedicine' %}"; // Redirect on success
+              } else {
+                alert(
+                  "Image upload failed: " + (data.error || "Unknown error")
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("An error occurred. Please try again.");
+            });
+        });
+
+        // Function to get CSRF token from cookies (for Django)
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== "") {
+            let cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+              let cookie = cookies[i].trim();
+              if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(
+                  cookie.substring(name.length + 1)
+                );
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,413 @@
+{% load static %} {% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'med_app/selectmedicine.css' %}" />
+    <title>Select Medicine</title>
+    <style>
+      /* General Styles */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #fafafa;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      .medicine-item {
+        /* Reset any conflicting styles */
+        display: table-row; /* Ensure it behaves like a table row */
+      }
+
+      .header {
+        background-color: #ffffff;
+        color: #333;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: #2d3436;
+      }
+
+      .cart-icon {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .cart-icon img {
+        width: 30px;
+        height: 30px;
+      }
+
+      #cartCount {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: #ff7675;
+        color: white;
+        border-radius: 50%;
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+
+      .selection-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #6c5ce7;
+        margin-bottom: 20px;
+        font-size: 22px;
+        font-weight: 600;
+      }
+
+      .medicine-list {
+        margin-bottom: 30px;
+      }
+
+      .medicine-list h3 {
+        color: #2d3436;
+        margin-bottom: 15px;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+      }
+
+      th {
+        background-color: #4b3f6c;
+        color: white;
+        font-weight: 500;
+      }
+
+      .medicine-item {
+        transition: background-color 0.3s ease;
+      }
+
+      .medicine-item:hover {
+        background-color: #f5f5f5;
+      }
+
+      .medicine-strips {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .quantity-input {
+        width: 50px;
+        text-align: center;
+        margin: 0 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 5px;
+        font-size: 14px;
+      }
+
+      .quantity-decrease,
+      .quantity-increase {
+        background-color: #6c5ce7;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        font-size: 14px;
+      }
+
+      .quantity-decrease:hover,
+      .quantity-increase:hover {
+        background-color: #5a4acf;
+      }
+
+      .quantity-decrease:disabled,
+      .quantity-increase:disabled {
+        background-color: #b2bec3;
+        cursor: not-allowed;
+      }
+
+      .available-medicines {
+        background-color: #f7f7f7;
+        padding: 15px;
+        border-radius: 12px;
+      }
+
+      .unavailable-medicines {
+        background-color: #fff3e6;
+        padding: 15px;
+        border-radius: 12px;
+      }
+
+      .out-of-stock {
+        color: #95a5a6;
+      }
+
+      .total-amount-wrapper {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        background-color: #4b3f6c; /* Accent color background */
+        padding: 20px; /* Padding for spacing */
+        border-radius: 12px; /* Rounded corners */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        margin: 30px 0; /* Margin for spacing */
+      }
+
+      /* Total Amount Text */
+      .total-amount {
+        font-size: 28px; /* Larger font size */
+        font-weight: 700; /* Bold font weight */
+        color: #ffffff; /* White text for contrast */
+        text-align: center; /* Center text */
+        margin: 0; /* Remove default margin */
+      }
+      /* Submit Order Button */
+      #submitOrderButton {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        background-color: #00b894; /* Green background for visibility */
+        color: white; /* White text for contrast */
+        border: none;
+        border-radius: 12px; /* Rounded corners */
+        font-size: 18px; /* Larger font size */
+        font-weight: 600; /* Bold font weight */
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth hover effect */
+        margin-top: 20px; /* Spacing from the total amount */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      }
+
+      #submitOrderButton:hover {
+        background-color: #00997b; /* Darker green on hover */
+      }
+
+      /* Dynamic Styling for Days and Price */
+      .medicine-days,
+      .medicine-price {
+        transition: all 0.3s ease;
+      }
+
+      .medicine-days.changed,
+      .medicine-price.changed {
+        background-color: #ffeaa7; /* Highlight color */
+        color: #2d3436;
+        font-weight: bold;
+        animation: flash 0.5s ease;
+      }
+
+      @keyframes flash {
+        0% {
+          background-color: #ffeaa7;
+        }
+        50% {
+          background-color: #ff7675;
+        }
+        100% {
+          background-color: #ffeaa7;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>{% trans "Auṣatra" %}</h1>
+      <div class="cart-icon">
+        <img src="{% static 'shopping-cart.png' %}" alt="Cart Icon" />
+        <span id="cartCount">0</span>
+      </div>
+    </div>
+
+    <div class="selection-container">
+      <h2>{% trans "Select Your Medicines" %}</h2>
+
+      <!-- Available Medicines Section -->
+      <div class="medicine-list available-medicines">
+        <h3>{% trans "Available Medicines" %}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>{% trans "Medicine Name" %}</th>
+              <th>{% trans "Strips" %}</th>
+              <th>{% trans "Price per Strip" %}</th>
+              <th>{% trans "Medicine per Strip" %}</th>
+              <th>{% trans "Days" %}</th>
+              <th>{% trans "Price" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for medicine in medicines %} {% if medicine.available == 1 %}
+            <tr
+              class="medicine-item"
+              data-stripsize="{{ medicine.stripsize }}"
+              data-quantity="{{ medicine.quantity }}"
+              data-medperday="{{ medicine.medperday }}"
+              data-ppu="{{ medicine.price }}"
+            >
+              <td class="medicine-name">{{ medicine.name }}</td>
+              <td class="medicine-strips">
+                <button class="quantity-decrease">-</button>
+                <input
+                  type="number"
+                  class="quantity-input"
+                  value="1"
+                  min="0"
+                  readonly
+                />
+                <button class="quantity-increase">+</button>
+              </td>
+              <td>{{ medicine.price }}</td>
+              <td class="medicine-stripsize">{{ medicine.stripsize }}</td>
+              <td class="medicine-days">0</td>
+              <td class="medicine-price">₹0.00</td>
+            </tr>
+            {% endif %} {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Unavailable Medicines Section -->
+      <div class="medicine-list unavailable-medicines">
+        <h3>{% trans "Out of Stock Medicines" %}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>{% trans "Medicine Name" %}</th>
+              <th>{% trans "Status" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for medicine in medicines %} {% if medicine.available == 0 %}
+            <tr class="out-of-stock">
+              <td class="medicine-name">{{ medicine.name }}</td>
+              <td>{% trans "Currently Unavailable" %}</td>
+            </tr>
+            {% endif %} {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="total-amount-wrapper">
+        <div class="total-amount">{% trans "Total: ₹0.00" %}</div>
+        <button
+          id="submitOrderButton"
+          data-url="{% url 'medicliq_payment:cart2' %}"
+        >
+          {% trans "Submit Order" %}
+        </button>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        sessionStorage.removeItem("quickCart");
+        let cartData = [];
+
+        function updateCartStorage() {
+          const cartPayload = {
+            timestamp: Date.now(),
+            items: cartData.map((item) => ({
+              name: item.name,
+              type: "Prescription Medicine",
+              quantity: item.quantity,
+              price: item.price,
+            })),
+          };
+          sessionStorage.setItem("cartData", JSON.stringify(cartPayload));
+          updateDisplay();
+        }
+
+        function updateDisplay() {
+          document.getElementById("cartCount").textContent = cartData.reduce(
+            (sum, item) => sum + item.quantity,
+            0
+          );
+          document.querySelector(
+            ".total-amount"
+          ).textContent = `Total: ₹${cartData
+            .reduce((sum, item) => sum + item.price, 0)
+            .toFixed(2)}`;
+        }
+
+        document.querySelectorAll(".medicine-item").forEach((medicine) => {
+          const name = medicine.querySelector(".medicine-name").textContent;
+          const stripsize = parseInt(medicine.dataset.stripsize) || 1;
+          const quantity = parseInt(medicine.dataset.quantity) || 0;
+          const maxStrips = Math.floor(quantity / stripsize);
+          const medperday = parseFloat(medicine.dataset.medperday) || 1;
+          const ppu = parseFloat(medicine.dataset.ppu) || 0;
+          const quantityInput = medicine.querySelector(".quantity-input");
+          const [decreaseBtn, increaseBtn] =
+            medicine.querySelectorAll("button");
+
+          quantityInput.value = maxStrips;
+          increaseBtn.disabled = true;
+          decreaseBtn.disabled = maxStrips === 0;
+
+          function updateValues(strips) {
+            const days = (strips * stripsize) / medperday;
+            const price = strips * ppu;
+            medicine.querySelector(".medicine-days").textContent =
+              days.toFixed(1);
+            medicine.querySelector(
+              ".medicine-price"
+            ).textContent = `₹${price.toFixed(2)}`;
+
+            const index = cartData.findIndex((item) => item.name === name);
+            if (index > -1) {
+              if (strips === 0) cartData.splice(index, 1);
+              else cartData[index] = { name, quantity: strips, price };
+            } else if (strips > 0) {
+              cartData.push({ name, quantity: strips, price });
+            }
+            updateCartStorage();
+          }
+
+          function adjustQuantity(change) {
+            let strips = parseInt(quantityInput.value) + change;
+            strips = Math.max(0, Math.min(strips, maxStrips));
+            quantityInput.value = strips;
+            decreaseBtn.disabled = strips === 0;
+            increaseBtn.disabled = strips === maxStrips;
+            updateValues(strips);
+          }
+
+          decreaseBtn.addEventListener("click", () => adjustQuantity(-1));
+          increaseBtn.addEventListener("click", () => adjustQuantity(1));
+          updateValues(maxStrips);
+        });
+
+        document
+          .getElementById("submitOrderButton")
+          .addEventListener("click", () => {
+            updateCartStorage();
+            window.location.href = "{% url 'medicliq_payment:cart2' %}";
+          });
+      });
+    </script>
+  </body>
+</html>
